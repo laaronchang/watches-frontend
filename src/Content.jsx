@@ -1,5 +1,6 @@
 import { WatchesIndex } from "./WatchesIndex";
-import {useState, useEffect } from "react";
+import { useState, useEffect } from "react";
+import { WatchesNew } from "./WatchesNew";
 import axios from "axios";
 
 export function Content() {
@@ -14,11 +15,22 @@ export function Content() {
     });
   };
 
+  const handleCreateWatch = (params, successCallback) => {
+    console.log("handleCreateWatch", params);
+    axios.post("http://localhost:3000/watches.json", params).then((response) => {
+      setWatches([...watches, response.data]);
+      successCallback();
+    });
+  };
+
   useEffect(handleWatchesIndex, []);
 
   return (
     <main>
-      {/* <h1>Watches</h1> */}
+      <WatchesNew onCreateWatch={handleCreateWatch} />
+      <br />
+      <br />
+      <br />
       <WatchesIndex watches={watches} />
     </main>
   )
